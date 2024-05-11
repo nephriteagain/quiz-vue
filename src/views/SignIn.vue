@@ -7,7 +7,7 @@ import { RouterLink } from "vue-router";
 <template>
     <main class="w-full flex flex-col items-center py-4">
         <!-- TODO: convert into form -->
-        <div class="w-full max-w-[330px] flex flex-col gap-y-4">
+        <div class="w-full max-w-[330px] flex flex-col gap-y-4 py-4">
             <h1 class="font-bold text-2xl text-center">Sign In to your account.</h1>
             <div class="flex flex-col gap-y-4">
                 <div class="flex flex-col gap-2">
