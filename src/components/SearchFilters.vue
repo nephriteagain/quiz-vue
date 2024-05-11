@@ -31,7 +31,7 @@ function nextPage() {
     currentPage.value++;
 }
 function previousPage() {
-    if (currentPage.value === 0) return;
+    if (currentPage.value === 1) return;
     const firstPage = pageNums.value[0];
     if (currentPage.value === firstPage) {
         pageNums.value = pageNums.value.map((p) => p - 1);

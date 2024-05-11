@@ -21,7 +21,7 @@ import { RouterLink, RouterView } from "vue-router";
                 <RouterLink
                     to="/signup"
                     class="bg-main px-2 py-1 rounded-md shadow-sm font-semibold text-lg"
-                    >Sign Ip
+                    >Sign Up
                 </RouterLink>
             </div>
         </nav>
