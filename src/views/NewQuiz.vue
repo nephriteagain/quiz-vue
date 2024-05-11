@@ -4,9 +4,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import MinusCircle from "@/components/icons/MinusCircle.vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import type { Ref } from "vue";
-import { nodeModuleNameResolver } from "typescript";
 
 interface IChoice {
     id: number;
@@ -14,6 +13,7 @@ interface IChoice {
 }
 
 interface IQuestion {
+    id: number;
     question: string;
     choices: IChoice[];
     answer: string;
@@ -25,25 +25,25 @@ interface IQuiz {
     questions: IQuestion[];
 }
 
+function generateBlankChoices() {
+    return [
+        { id: id++, value: "" },
+        { id: id++, value: "" },
+        { id: id++, value: "" },
+    ];
+}
+
 let id = 0;
-const initialChoiceValue = [
-    { id: id++, value: "" },
-    { id: id++, value: "" },
-    { id: id++, value: "" },
-];
-const currentQuestionNum = ref(1);
+let questionId = 0;
 const question = ref("");
-const choices = ref([
-    { id: id++, value: "" },
-    { id: id++, value: "" },
-    { id: id++, value: "" },
-]);
+const choices = ref(generateBlankChoices());
 const answer = ref("");
 const quiz: Ref<IQuiz> = ref({
     title: "",
     description: "",
     questions: [],
 });
+const currentQuestionNum = computed(() => quiz.value.questions.length + 1);
 
 function addChoice() {
     if (choices.value.length === 10) {
@@ -64,18 +64,28 @@ function addQuestion() {
         question: question.value,
         choices: choices.value,
         answer: answer.value,
+        id: questionId++,
     });
     question.value = "";
-    choices.value = initialChoiceValue;
+    choices.value = generateBlankChoices();
+
     answer.value = "";
+}
+
+function saveQuiz() {
+    console.log(quiz.value);
 }
 
 const chars = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
 </script>
 <template>
     <main>
-        <h1 class="font-bold text-3xl text-center py-4">Create New Quiz</h1>
-        <div class="flex flex-row gap-y-4">
+        <div class="flex flex-row justify-between items-center">
+            <div></div>
+            <h1 class="font-bold text-3xl text-center py-4">Create New Quiz</h1>
+            <Button class="flex-semibold text-lg" @click="saveQuiz">Save Quiz</Button>
+        </div>
+        <div class="flex flex-row gap-x-4">
             <div class="basis-1/2 flex flex-col gap-y-4">
                 <div class="flex flex-col gap-y-2">
                     <Label for="create-title">Title</Label>
@@ -109,7 +119,7 @@ const chars = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
                                 <Button
                                     size="icon"
                                     variant="ghost"
-                                    class="border-2 border-dark self-center rounded-full items-center justify-center"
+                                    class="border-2 border-dark self-center rounded-full items-center justify-center aspec"
                                     @click="removeChoice(option.id)"
                                 >
                                     <MinusCircle />
@@ -127,8 +137,27 @@ const chars = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
             </div>
             <div class="basis-1/2">
                 <h2 class="text-2xl font-bold text-center">Preview</h2>
-                <div>
-                    {{ `${JSON.stringify(quiz, null, 4)}` }}
+                <div class="flex flex-col gap-y-4">
+                    <div>
+                        <h2 class="font-bold text-xl">{{ quiz.title }}</h2>
+                        <h2 class="font-bold text-lg">{{ quiz.description }}</h2>
+                    </div>
+                    <ul>
+                        <li v-for="(q, index) in quiz.questions" :key="q.id">
+                            <div class="flex flex-row gap-x-3 text-lg font-semibold">
+                                <p>{{ index + 1 }}.</p>
+                                <p>{{ q.question }}</p>
+                            </div>
+                            <div
+                                v-for="(c, index) in q.choices"
+                                :key="c.id"
+                                class="flex flex-row gap-x-3 ps-6"
+                            >
+                                <p>{{ chars[index] }}.</p>
+                                <p>{{ c.value }}</p>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
