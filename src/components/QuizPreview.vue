@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
 import type { IQuiz } from "@/types";
+import { chars } from "@/lib/sample";
 
 const props = defineProps<IQuiz>();
-const chars = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
 </script>
 
 <template>

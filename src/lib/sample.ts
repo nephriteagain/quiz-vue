@@ -70,3 +70,45 @@ export const quizCards = [
             "Embark on a fascinating exploration of the human body, from the intricate systems that sustain life to the marvels of anatomy, physiology, and the wonders of biology.",
     },
 ];
+
+export const sampleQuiz = {
+    title: "Sample Quiz",
+    description: "This is a sample quiz for demonstration purposes.",
+    questions: [
+        {
+            id: 1,
+            question: "What is the capital of France?",
+            choices: [
+                { id: 1, value: "Paris" },
+                { id: 2, value: "London" },
+                { id: 3, value: "Berlin" },
+                { id: 4, value: "Madrid" },
+            ],
+            answer: "Paris",
+        },
+        {
+            id: 2,
+            question: "Who painted the Mona Lisa?",
+            choices: [
+                { id: 1, value: "Leonardo da Vinci" },
+                { id: 2, value: "Vincent van Gogh" },
+                { id: 3, value: "Pablo Picasso" },
+                { id: 4, value: "Michelangelo" },
+            ],
+            answer: "Leonardo da Vinci",
+        },
+        {
+            id: 3,
+            question: "What is the largest planet in our solar system?",
+            choices: [
+                { id: 1, value: "Mercury" },
+                { id: 2, value: "Venus" },
+                { id: 3, value: "Earth" },
+                { id: 4, value: "Jupiter" },
+            ],
+            answer: "Jupiter",
+        },
+    ],
+};
+
+export const chars = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];

@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import MinusCircle from "@/components/icons/MinusCircle.vue";
 import { ref } from "vue";
+import { chars } from "@/lib/sample";
 
 const props = defineProps<{ currentQuestionNum: number }>();
 defineEmits(["title-change", "description-change", "add-question"]);
@@ -38,8 +39,6 @@ function addChoice() {
 function removeChoice(id: number) {
     choices.value = choices.value.filter((option) => option.id !== id);
 }
-
-const chars = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
 </script>
 <template>
     <div class="basis-1/2 flex flex-col gap-y-4">

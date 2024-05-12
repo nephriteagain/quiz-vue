@@ -43,7 +43,7 @@ function previousPage() {
 </script>
 
 <template>
-    <div>
+    <div class="pt-8">
         <div class="flex flex-row gap-10 py-2">
             <div class="flex flex-row gap-2">
                 <Button
@@ -79,7 +79,7 @@ function previousPage() {
                 </Button>
             </div>
         </div>
-        <div class="flex flex-row justify-between py-1">
+        <div class="flex flex-col sm:flex-row justify-between gap-y-2 py-1">
             <div class="flex flex-row gap-x-2 items-center">
                 <div class="relative">
                     <SearchIcon />
@@ -87,7 +87,7 @@ function previousPage() {
                 </div>
 
                 <Select default-value="title">
-                    <SelectTrigger class="w-[180px]">
+                    <SelectTrigger class="w-[120px]">
                         <SelectValue placeholder="select a filter" />
                     </SelectTrigger>
                     <SelectContent>

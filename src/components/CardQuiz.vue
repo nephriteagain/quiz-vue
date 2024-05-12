@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { Button } from "./ui/button";
 import { defineProps } from "vue";
+import { RouterLink } from "vue-router";
 
 interface IQuizCard {
+    id: number;
     title: string;
     author: string;
     description?: string;
@@ -18,14 +19,17 @@ const props = defineProps<IQuizCard>();
             <p class="font-semibold text-lg text-nowrap overfow-x-scroll">{{ props.author }}</p>
             <p
                 v-if="Boolean(props.description)"
-                class="text-sm text-black/60 min-h-[60px] max-h-[84px] text-ellipsis overflow-y-scroll"
+                class="text-sm text-black/75 h-[60px] text-ellipsis overflow-y-scroll"
             >
                 {{ props.description }}
             </p>
         </div>
-        <div>
-            <!-- TODO: replace with router link -->
-            <Button class="w-full"> Answer Quiz! </Button>
-        </div>
+        <!-- TODO: replace with router link -->
+        <RouterLink
+            :to="{ name: 'answer-quiz', params: { id: props.id } }"
+            class="flex items-center justify-center w-full bg-main px-2 py-1 rounded-md shadow-sm font-semibold text-lg hover:bg-main/80"
+        >
+            Answer Quiz!
+        </RouterLink>
     </div>
 </template>
