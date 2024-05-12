@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import SignIn from "@/views/SignIn.vue";
+import SignUp from "@/views/SignUp.vue";
 import NewQuiz from "@/views/NewQuiz.vue";
 
 const router = createRouter({
@@ -15,6 +16,11 @@ const router = createRouter({
             path: "/signin",
             name: "signin",
             component: SignIn,
+        },
+        {
+            path: "/signup",
+            name: "signup",
+            component: SignUp,
         },
         {
             path: "/new-quiz",
