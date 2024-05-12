@@ -25,7 +25,7 @@ import { RouterLink, RouterView } from "vue-router";
                 </RouterLink>
             </div>
         </nav>
-        <div class="w-full px-0 sm:px-4 md:px-8 lg:px-12 flex-grow bg-light">
+        <div class="w-full px-2 sm:px-4 md:px-8 lg:px-12 flex-grow bg-light">
             <RouterView />
         </div>
     </div>

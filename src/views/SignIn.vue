@@ -3,6 +3,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { RouterLink } from "vue-router";
+import { ref } from "vue";
+import EyeClean from "@/components/icons/EyeClean.vue";
+import EyeSlash from "@/components/icons/EyeSlash.vue";
+
+const showPassword = ref(false);
+function toggleShowPassword() {
+    showPassword.value = !showPassword.value;
+}
 </script>
 <template>
     <main class="w-full flex flex-col items-center py-4">
@@ -16,14 +24,23 @@ import { RouterLink } from "vue-router";
                 </div>
                 <div class="flex flex-col gap-2">
                     <Label for="password" class="font-semibold">Password</Label>
-                    <Input id="password" />
+                    <div class="relative">
+                        <Input id="password" :type="showPassword === false ? 'password' : 'text'" />
+                        <span
+                            @click="toggleShowPassword"
+                            class="absolute top-1/2 -translate-y-1/2 right-2"
+                        >
+                            <EyeClean v-if="!showPassword" />
+                            <EyeSlash v-else />
+                        </span>
+                    </div>
                 </div>
                 <div>
-                    <div class="flex flex-row gap-x-2">
+                    <div class="flex flex-row gap-x-2 text-sm">
                         <p>Forgot password?</p>
                         <RouterLink to="/reset" class="text-dark">click here.</RouterLink>
                     </div>
-                    <div class="flex flex-row gap-x-2">
+                    <div class="flex flex-row gap-x-2 text-sm">
                         <RouterLink to="/signup" class="text-dark">Create a new account</RouterLink>
                         <p>instead.</p>
                     </div>
