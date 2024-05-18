@@ -2,10 +2,10 @@
 import { defineProps } from "vue";
 import { RouterLink } from "vue-router";
 
-interface IQuizCard {
-    id: number;
+export interface IQuizCard {
+    id: string;
     title: string;
-    author: string;
+    createdBy: string;
     description?: string;
 }
 const props = defineProps<IQuizCard>();
@@ -16,7 +16,7 @@ const props = defineProps<IQuizCard>();
     >
         <div>
             <p class="font-bold text-xl text-nowrap overflow-x-scroll">{{ props.title }}</p>
-            <p class="font-semibold text-lg text-nowrap overfow-x-scroll">{{ props.author }}</p>
+            <p class="font-semibold text-lg text-nowrap overfow-x-scroll">{{ props.createdBy }}</p>
             <p
                 v-if="Boolean(props.description)"
                 class="text-sm text-black/75 h-[60px] text-ellipsis overflow-y-scroll"

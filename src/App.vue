@@ -4,7 +4,7 @@ import { RouterLink, RouterView } from "vue-router";
 
 <template>
     <div class="flex flex-col w-full h-screen">
-        <nav class="bg-sub flex flex-row justify-between py-2 shadow-md px-2 sm:px-4">
+        <nav class="fixed w-full bg-sub flex flex-row justify-between py-2 shadow-md px-2 sm:px-4">
             <div class="flex flex-row gap-x-3">
                 <RouterLink
                     to="/"
@@ -25,10 +25,8 @@ import { RouterLink, RouterView } from "vue-router";
                 </RouterLink>
             </div>
         </nav>
-        <div class="w-full px-2 sm:px-4 md:px-8 lg:px-12 flex-grow bg-light">
+        <div class="w-full px-2 sm:px-4 md:px-8 lg:px-12 flex-grow bg-light pt-14">
             <RouterView />
         </div>
     </div>
 </template>
-
-<style scoped></style>

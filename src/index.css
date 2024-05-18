@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 @layer base {
-    html {
+    html,
+    body,
+    .stable-scroll {
         scrollbar-gutter: stable;
         @apply bg-light;
     }

@@ -1,7 +1,23 @@
 <script setup lang="ts">
 import SearchFilters from "@/components/SearchFilters.vue";
 import CardQuiz from "@/components/CardQuiz.vue";
-import { quizCards } from "@/lib/sample";
+import { ref } from "vue";
+import type { IQuizCard } from "@/components/CardQuiz.vue";
+import type { QuizListDto } from "@/types";
+
+const quizList = ref<IQuizCard[]>([]);
+
+async function fetchCardData() {
+    const res = await fetch("http://localhost:3000/api/v1/");
+    const fetchedQuizList: QuizListDto[] = await res.json();
+    const formattedQuizList = fetchedQuizList.map((q) => ({
+        ...q,
+        id: q._id,
+    }));
+    quizList.value = formattedQuizList;
+}
+
+fetchCardData();
 </script>
 
 <template>
@@ -16,7 +32,7 @@ import { quizCards } from "@/lib/sample";
         </div>
         <SearchFilters />
         <section class="w-full flex flex-row flex-wrap gap-4 justify-center py-8">
-            <CardQuiz v-for="item in quizCards" :key="item.id" v-bind="item" />
+            <CardQuiz v-for="item in quizList" :key="item.id" v-bind="item" />
         </section>
     </main>
 </template>

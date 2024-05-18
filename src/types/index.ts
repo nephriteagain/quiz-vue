@@ -15,3 +15,25 @@ export interface IQuiz {
     description: string;
     questions: IQuestion[];
 }
+
+export type QuizListDto = {
+    _id: string;
+    title: string;
+    createdBy: string;
+    votes: string;
+};
+
+export type QuestionsDto = {
+    questionText: string;
+    options: string[];
+    correctAnswer: string;
+};
+
+export type QuizItemDto = {
+    _id: string;
+    title: string;
+    createdBy: string;
+    createdAt: string;
+    authorId: string;
+    questions: QuestionsDto[];
+};
