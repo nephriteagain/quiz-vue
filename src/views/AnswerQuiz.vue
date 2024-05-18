@@ -20,6 +20,9 @@ import { useRoute } from "vue-router";
 import { computed, ref } from "vue";
 import type { QuizItemDto, UserQuizAnswer, QuestionResultDto } from "@/types";
 
+const route = useRoute();
+const id = route.params.id as string;
+
 const quizItem = ref<null | QuizItemDto>(null);
 const userAnswer = ref<UserQuizAnswer[]>([]);
 const quizResult = ref<QuestionResultDto[] | null>(null);
@@ -31,8 +34,10 @@ const totalScore = computed(() => {
     const totalQuestions = quizResult.value.length;
     return `Score: ${score}/${totalQuestions}`;
 });
-const route = useRoute();
-const id = route.params.id as string;
+const submitDisabled = computed(
+    () =>
+        userAnswer.value.length === 0 || userAnswer.value.some((a) => a.correctAnswer.length === 0),
+);
 
 async function fetchQuiz(id: string) {
     const res = await fetch(`http://localhost:3000/api/v1/quiz/${id}`);
@@ -143,7 +148,8 @@ fetchQuiz(id);
                 <Button v-if="quizResult" @click="retryQuiz"> Retry Quiz </Button>
                 <AlertDialog v-else>
                     <AlertDialogTrigger
-                        class="bg-main px-3 py-1 rounded-md font-semibold text-lg hover:bg-main/80"
+                        class="bg-main px-3 py-1 rounded-md font-semibold text-lg hover:bg-main/80 disabled:opacity-60 transition-all duration-150"
+                        :disabled="submitDisabled"
                         >Submit</AlertDialogTrigger
                     >
                     <AlertDialogContent>

@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import MinusCircle from "@/components/icons/MinusCircle.vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { chars } from "@/lib/sample";
 
 const props = defineProps<{ currentQuestionNum: number }>();
@@ -25,6 +25,14 @@ const description = ref("");
 const question = ref("");
 const choices = ref(generateBlankChoices());
 const answer = ref("");
+const canAddQuestion = computed(() => {
+    const questionNotEmpty = question.value.length > 0;
+    const answerNotEmpty = answer.value.length > 0;
+    const allChoicesHasValue = choices.value.every((v) => Boolean(v.value));
+    const answerHasOneMatch =
+        choices.value.reduce((acc, curr) => (answer.value === curr.value ? acc + 1 : acc), 0) === 1;
+    return questionNotEmpty && answerNotEmpty && allChoicesHasValue && answerHasOneMatch;
+});
 
 function addChoice() {
     if (choices.value.length === 10) {
@@ -37,6 +45,7 @@ function addChoice() {
     });
 }
 function removeChoice(id: number) {
+    if (choices.value.length === 1) return;
     choices.value = choices.value.filter((option) => option.id !== id);
 }
 </script>
@@ -95,6 +104,7 @@ function removeChoice(id: number) {
             </div>
         </div>
         <Button
+            :disabled="!canAddQuestion"
             class="w-[300px] font-semibold"
             @click="
                 $emit('add-question', {

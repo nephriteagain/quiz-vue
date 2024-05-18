@@ -12,6 +12,7 @@ const quiz: Ref<IQuiz> = ref({
     questions: [],
 });
 const currentQuestionNum = computed(() => quiz.value.questions.length + 1);
+const canSaveQuiz = computed(() => quiz.value.questions.length > 0);
 
 function addQuestion(question: IQuestion) {
     quiz.value.questions.push(question);
@@ -26,7 +27,9 @@ function saveQuiz() {
         <div class="flex flex-row justify-between items-center">
             <div></div>
             <h1 class="font-bold text-3xl text-center py-4">Create New Quiz</h1>
-            <Button class="flex-semibold text-lg" @click="saveQuiz">Save Quiz</Button>
+            <Button :disabled="!canSaveQuiz" class="flex-semibold text-lg" @click="saveQuiz"
+                >Save Quiz</Button
+            >
         </div>
         <div class="flex flex-row gap-x-4">
             <QuizEditor
