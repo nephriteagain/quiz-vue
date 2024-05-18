@@ -37,3 +37,13 @@ export type QuizItemDto = {
     authorId: string;
     questions: QuestionsDto[];
 };
+
+export type UserQuizAnswer = {
+    questionText: string;
+    correctAnswer: string;
+};
+
+export type QuestionResultDto = QuestionsDto & {
+    userAnswer: string;
+    userCorrect: boolean;
+};
