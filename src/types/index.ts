@@ -47,3 +47,10 @@ export type QuestionResultDto = QuestionsDto & {
     userAnswer: string;
     userCorrect: boolean;
 };
+
+export type User = {
+    email: string;
+    firstName: string;
+    id: string;
+    lastName: string;
+};
