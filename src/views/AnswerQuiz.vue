@@ -19,6 +19,7 @@ import CheckMark from "@/components/icons/CheckMark.vue";
 import { useRoute } from "vue-router";
 import { computed, ref } from "vue";
 import type { QuizItemDto, UserQuizAnswer, QuestionResultDto } from "@/types";
+import a from "@/lib/utils";
 
 const route = useRoute();
 const id = route.params.id as string;
@@ -40,8 +41,8 @@ const submitDisabled = computed(
 );
 
 async function fetchQuiz(id: string) {
-    const res = await fetch(`http://localhost:3000/api/v1/quiz/${id}`);
-    const quiz: QuizItemDto = await res.json();
+    const res = await a.get(`/quiz/${id}`);
+    const quiz: QuizItemDto = res.data;
     quizItem.value = quiz;
     userAnswer.value = quiz.questions.map((q) => ({
         questionText: q.questionText,
@@ -55,14 +56,8 @@ async function submitQuiz() {
         _id: quizItem.value._id,
         questions: userAnswer.value,
     };
-    const res = await fetch(`http://localhost:3000/api/v1/quiz/${quizItem.value._id}`, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
-    const results = (await res.json()) as QuestionResultDto[];
+    const res = await a.post(`/quiz/${quizItem.value._id}`, data);
+    const results = res.data as QuestionResultDto[];
     quizResult.value = results;
 }
 

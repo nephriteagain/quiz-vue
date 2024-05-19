@@ -16,7 +16,9 @@ async function handleLogout() {
 
 <template>
     <div class="flex flex-col w-full h-screen">
-        <nav class="fixed w-full bg-sub flex flex-row justify-between py-2 shadow-md px-2 sm:px-4">
+        <nav
+            class="fixed w-full bg-sub flex flex-row justify-between py-2 shadow-md px-2 sm:px-4 z-50"
+        >
             <div class="flex flex-row gap-x-3">
                 <RouterLink
                     to="/"

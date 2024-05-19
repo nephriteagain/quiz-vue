@@ -48,6 +48,12 @@ function removeChoice(id: number) {
     if (choices.value.length === 1) return;
     choices.value = choices.value.filter((option) => option.id !== id);
 }
+
+function clearInputs() {
+    question.value = "";
+    choices.value = generateBlankChoices();
+    answer.value = "";
+}
 </script>
 <template>
     <div class="basis-1/2 flex flex-col gap-y-4">
@@ -107,12 +113,15 @@ function removeChoice(id: number) {
             :disabled="!canAddQuestion"
             class="w-[300px] font-semibold"
             @click="
-                $emit('add-question', {
-                    question,
-                    choices,
-                    answer,
-                    id: questionId++,
-                })
+                () => {
+                    $emit('add-question', {
+                        question,
+                        choices,
+                        answer,
+                        id: questionId++,
+                    });
+                    clearInputs();
+                }
             "
             >Add Question</Button
         >
