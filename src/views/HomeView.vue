@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import SearchFilters from "@/components/SearchFilters.vue";
 import CardQuiz from "@/components/CardQuiz.vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import type { IQuizCard } from "@/components/CardQuiz.vue";
 import type { QuizListDto } from "@/types";
+import { useRoute } from "vue-router";
 
 const quizList = ref<IQuizCard[]>([]);
+const route = useRoute();
 
-async function fetchCardData() {
-    const res = await fetch("http://localhost:3000/api/v1/");
+async function fetchCardData(query: typeof route.query) {
+    const queryParams = queryParamsToString(query);
+    const res = await fetch(`http://localhost:3000/api/v1/?${queryParams}`);
     const fetchedQuizList: QuizListDto[] = await res.json();
     const formattedQuizList = fetchedQuizList.map((q) => ({
         ...q,
@@ -17,7 +20,18 @@ async function fetchCardData() {
     quizList.value = formattedQuizList;
 }
 
-fetchCardData();
+function queryParamsToString(queryParams: Record<string, any>): string {
+    const params = new URLSearchParams(queryParams);
+    return params.toString();
+}
+
+fetchCardData(route.query);
+watch(
+    () => route.query,
+    (query) => {
+        fetchCardData(query);
+    },
+);
 </script>
 
 <template>

@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { debounce } from "lodash";
+import { ref, watch } from "vue";
 import { Button } from "@/components/ui/button";
+import { RouterLink, useRoute, useRouter } from "vue-router";
 import { Input } from "@/components/ui/input";
 import {
     Select,
@@ -15,11 +17,17 @@ import ChevronRight from "./icons/ChevronRight.vue";
 import SearchIcon from "./icons/SearchIcon.vue";
 
 const currentPage = ref(1);
+const currentDateSort = ref("-1");
+const currentQuizSort = ref("title");
+const searchKeyword = ref("");
+
 const pageNums = ref([1, 2, 3, 4, 5]);
+
+const route = useRoute();
+const router = useRouter();
 
 function selectPage(page: number) {
     currentPage.value = page;
-    console.log(currentPage.value);
 }
 function nextPage() {
     const lastPage = pageNums.value[pageNums.value.length - 1];
@@ -40,26 +48,57 @@ function previousPage() {
     }
     currentPage.value--;
 }
+
+const debouncedSearch = debounce((quizSort, searchKeyword) => {
+    if (quizSort === "title") {
+        router.push({
+            path: route.path,
+            query: { ...route.query, author: "", title: searchKeyword },
+        });
+        return;
+    }
+    router.push({
+        path: route.path,
+        query: { ...route.query, title: "", author: searchKeyword },
+    });
+}, 500);
+
+watch(currentPage, (newPage) => {
+    router.push({ path: route.path, query: { ...route.query, page: newPage } });
+});
+
+watch(currentDateSort, (newDateSort) => {
+    router.push({ path: route.path, query: { ...route.query, date: newDateSort } });
+});
+
+watch([currentQuizSort, searchKeyword], ([newQuizSort, newSearchKeyword]) => {
+    debouncedSearch.cancel();
+    debouncedSearch(newQuizSort, newSearchKeyword);
+});
 </script>
 
 <template>
     <div class="pt-8">
         <div class="flex flex-row gap-10 py-2">
             <div class="flex flex-row gap-2">
-                <Button
-                    size="icon"
+                <RouterLink
+                    :to="{ path: $route.path, query: { ...$route.query, page: num } }"
                     v-for="num in pageNums"
                     :key="num"
-                    :class="{
-                        'bg-dark text-white px-2 aspect-square rounded-md shadow-sm flex items-center justify-center':
-                            currentPage === num,
-                        'bg-sub  px-2 aspect-square rounded-md shadow-sm flex items-center justify-center':
-                            currentPage !== num,
-                    }"
-                    @click="selectPage(num)"
                 >
-                    {{ num }}
-                </Button>
+                    <Button
+                        size="icon"
+                        :class="{
+                            'bg-dark text-white px-2 aspect-square rounded-md shadow-sm flex items-center justify-center':
+                                currentPage === num,
+                            'bg-sub  px-2 aspect-square rounded-md shadow-sm flex items-center justify-center':
+                                currentPage !== num,
+                        }"
+                        @click="selectPage(num)"
+                    >
+                        {{ num }}
+                    </Button>
+                </RouterLink>
             </div>
             <div class="flex flex-row gap-2">
                 <Button
@@ -83,10 +122,10 @@ function previousPage() {
             <div class="flex flex-row gap-x-2 items-center">
                 <div class="relative">
                     <SearchIcon />
-                    <Input placeholder="Search..." class="ps-8" />
+                    <Input placeholder="Search..." class="ps-8" v-model="searchKeyword" />
                 </div>
 
-                <Select default-value="title">
+                <Select default-value="title" v-model="currentQuizSort">
                     <SelectTrigger class="w-[120px]">
                         <SelectValue placeholder="select a filter" />
                     </SelectTrigger>
@@ -99,14 +138,14 @@ function previousPage() {
                 </Select>
             </div>
             <div>
-                <Select default-value="desc">
+                <Select default-value="desc" v-model="currentDateSort">
                     <SelectTrigger class="w-[180px]">
                         <SelectValue placeholder="select a filter" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
-                            <SelectItem value="desc"> descending </SelectItem>
-                            <SelectItem value="asc"> ascending </SelectItem>
+                            <SelectItem value="-1"> descending </SelectItem>
+                            <SelectItem value="1"> ascending </SelectItem>
                         </SelectGroup>
                     </SelectContent>
                 </Select>
