@@ -32,5 +32,22 @@ export const userUserStore = defineStore("counter", () => {
         return false;
     }
 
-    return { user, login, logout };
+    async function signup(data: {
+        email: string;
+        firstName: string;
+        lastName: string;
+        password: string;
+        confirmPass: string;
+    }) {
+        const res = await fetch("http://localhost:3000/api/v1/user/signup", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        return res.status;
+    }
+
+    return { user, login, logout, signup };
 });
